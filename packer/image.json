@@ -1,0 +1,62 @@
+{
+    "builders": [
+        {
+            "ami_description": "Packer built AMI for - {{user `application`}}",
+            "ami_name": "{{ user `application` }}-{{ user `version` }}",
+            "ami_users": [ "452128469101"],
+            "source_ami_filter": {
+                "filters": {
+                    "virtualization-type": "hvm",
+                    "name": "*Windows_Server-2019-English-Full-Base-*",
+                    "root-device-type": "ebs"
+                },
+                "owners": ["amazon"],
+                "most_recent": true
+            },
+            "ami_block_device_mappings": [ {
+                "device_name": "/dev/xvda",
+                "volume_size": 50,
+                "delete_on_termination": true
+            } ],
+            "launch_block_device_mappings": [ {
+                "device_name": "/dev/xvda",
+                "volume_size": 50,
+                "delete_on_termination": true
+            } ],
+            "encrypt_boot": true,
+            "kms_key_id": "{{ user `kms_key_id` }}",
+            "vpc_id": "{{user `vpc_id`}}",
+            "subnet_id": "{{user `subnet_id`}}",
+            "region": "ap-southeast-2",
+            "instance_type": "{{user `instance_type`}}",
+            "winrm_insecure": true,
+            "winrm_timeout": "10m",
+            "winrm_use_ssl": false,
+            "winrm_no_proxy": true,
+            "winrm_username": "Administrator",
+            "communicator": "winrm",
+            "user_data_file": "packer/bootstrap.ps1",
+            "type": "amazon-ebs",
+            "tags": {
+                "Application": "{{ user `application` }}",
+                "OS Type": "Windows_Server-2019",
+                "Name": "{{ user `application` }}-{{ user `version` }}"
+            }
+        }
+    ],
+    "provisioners": [
+      {
+        "type": "ansible",
+        "playbook_file": "ansible/playbooks/main.yml",
+        "user": "Administrator",
+        "use_proxy": false,
+        "extra_arguments": [
+          "--extra-vars", "winrm_password={{ .WinRMPassword }}",
+          "--extra-vars", "ansible_connection=winrm",
+          "--extra-vars", "ansible_port=5985",
+          "--extra-vars", "ansible_winrm_server_cert_validation=ignore",
+          "--extra-vars", "ansible_winrm_transport=ntlm"
+        ]
+      }
+    ]
+}

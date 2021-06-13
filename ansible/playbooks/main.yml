@@ -1,0 +1,15 @@
+- name: Opserver Installation
+  hosts: all
+  gather_facts: no
+  tasks:
+    - include_role:
+        name: "../../roles/install-chocolatey"
+
+    - include_role:
+        name: "../../roles/install-build-tools"
+
+    - include_role:
+        name: "../../roles/install-iis"
+    
+    - include_role:
+        name: "../../roles/install-op-server"

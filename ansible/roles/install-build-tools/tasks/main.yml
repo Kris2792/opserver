@@ -1,0 +1,16 @@
+- name: Install dotnet
+  win_chocolatey:
+    name:
+      - dotnetfx
+      - dotnetcore
+      - dotnetcore-sdk
+      - dotnet-sdk
+      - chocolatey-dotnetfx.extension
+    state: present
+
+- name: Install Visual Studio build tools
+  win_chocolatey:
+    name:
+      - visualstudio2017-workload-webbuildtools
+      - visualstudio2017-workload-netweb
+    state: present

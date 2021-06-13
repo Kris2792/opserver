@@ -1,0 +1,18 @@
+- name: Create directory to download source code
+  win_file:
+    path: C:\temp
+    state: directory
+
+- name: Download zip at head of Opserver repo
+  ansible.windows.win_get_url:
+    url: https://github.com/opserver/Opserver/archive/refs/heads/master.zip
+    dest: C:\temp\opserver.zip
+
+- name: Unzip code
+  win_unzip:
+    src: C:\temp\opserver.zip
+    dest: C:\temp\opserver
+    creates: C:\temp\opserver
+
+# - name: Run batch script to build Opserver
+#   win_command: C:\temp\opserver\Opserver-master\Build.bat
