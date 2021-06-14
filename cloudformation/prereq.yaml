@@ -342,13 +342,13 @@ Outputs:
     Value: !Ref NoIngressSecurityGroup
 
   Key:
-    Description: Security group with no ingress rule
+    Description: KMS Key to use for encryption
     Value: !Ref Key
   
   KeyAlias:
-    Description: Security group with no ingress rule
+    Description: Key Alias for easier referencing
     Value: !Ref KeyAlias
 
   InstanceProfile:
-    Description: Security group with no ingress rule
+    Description: Instance profile to use with application EC2 instances
     Value: !Ref InstanceProfile
