@@ -21,6 +21,7 @@ validate-image:
 
 # Generate an EC2 AMI containing all the relevant dependencies
 bake-image:
+# OBJC_DISABLE_INITIALIZE_FORK_SAFETY is used for Mac OS only
 	OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES \
 	ACTION=build \
 	APPLICATION=${APPLICATION} \
